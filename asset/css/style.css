@@ -1,0 +1,12 @@
+section.login_form {
+    margin-top: 50px;
+}
+button#login {
+    width: 100%;
+}
+button#signup {
+    width: 100%;
+}
+section.signup_form {
+    margin-top: 50px;
+}

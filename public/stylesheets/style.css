@@ -1,0 +1,22 @@
+input.postidtext {
+  display: none;
+}
+section.displaypost {
+  padding-top: 50px;
+}
+
+a {
+  color: #00B7FF;
+}
+section.login_form {
+  margin-top: 50px;
+}
+button#login {
+  width: 100%;
+}
+button#signup {
+  width: 100%;
+}
+section.signup_form {
+  margin-top: 50px;
+}

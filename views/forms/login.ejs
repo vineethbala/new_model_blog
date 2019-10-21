@@ -1,0 +1,36 @@
+<%- include('../include/header.ejs',{pageTitle:pageTitle }) %>
+
+
+    <section class="login_form">
+      <div class="container">
+      <form>
+          <div class="container">
+              <div class="row">
+              <div class="col-sm-6 offset-sm-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1"><h6>Email address</h6></label>
+                <input type="email" class="form-control" id="email_in" name="email" placeholder="Enter email">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1"><h6>Password</h6></label>
+                <input type="password" class="form-control" id="password_in" name="logpass" placeholder="Password">
+              </div>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md">
+                          <button type="button" class="btn btn-primary" id="login">Login</button>
+                      </div>
+                      <div class="col-md">
+                          <a class="signup_page" href="/signup">
+                          <button type="button" class="btn btn-primary" id="signup">Signup</button>
+                          </a>
+                      </div>
+                  </div> 
+              </div>
+          </div>
+          </div>              
+      </div>       
+      </form>
+      </div>
+  </section>
+  <%- include('../include/footer.ejs') %>

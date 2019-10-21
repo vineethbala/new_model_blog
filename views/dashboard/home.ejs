@@ -1,0 +1,161 @@
+<%- include('../include/header.ejs',{pageTitle:pageTitle }) %>
+<head class="home-nav">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <a class="navbar-brand" href="#">Maker</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto manin-navbar">
+         <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+         </li>
+      </ul>
+</div>
+</nav>
+</head>
+<section>
+    <div class="container" style="padding-top: 50px;">
+            <form>
+                <div class="container">
+                    <div class="row">
+                    <div class="col-sm-6 offset-sm-3">
+                    <div class="form-group">
+                       <h6>Add a Post Here:</h6> 
+                      <input type="text" class="form-control" id="post_data" name="content_data" placeholder="Text here">
+                    </div>                    
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md">
+                                <button type="button" class="btn btn-primary" id="post_login">Submit</button>
+                            </div>
+                           
+                        </div> 
+                    </div>
+                </div>
+                </div>              
+            </div>       
+            </form>
+    </div>
+</section>
+<!-- <section>
+        <div class="container" style="padding-top: 50px;">
+                <form method="POST" action="/commentget/home">
+                    <div class="container">
+                        <div class="row">
+                        <div class="col-sm-6 offset-sm-3">
+                        <div class="form-group">
+                          <input type="text" class="form-control" id="post_id" name="comment" placeholder="Text here">
+                        </div>                    
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md">
+                                    <button type="submit" class="btn btn-primary" id="login">Submit</button>
+                                </div>
+                               
+                            </div> 
+                        </div>
+                    </div>
+                    </div>              
+                </div>       
+                </form>
+        </div>
+    </section> -->
+    <section class="displaypost">
+    <div class="container">
+            <!-- <div class="row"> -->
+            <div class="col-sm-6 offset-sm-3">
+            <div id="post">
+
+            </div>
+        <!-- </div> -->
+        </div>
+        </div>
+</section>
+    <script>
+    var user =  JSON.parse( localStorage.getItem("user"));
+    console.log(user);
+    
+        function commentSubmit(val,id) {
+            var data = {
+                postid:val.previousSibling.value,
+                comment:val.previousSibling.previousSibling.value
+            }
+            $.ajax({
+                url: "http://localhost:8080/comment/saveComment",
+                type:'POST',
+                cache: false,
+                dataType: 'json',
+                data: data,
+                success: function(data){
+                    console.log("success")
+                    window.location.reload()
+                }
+            })
+        }
+          $.ajax({
+          url: "http://localhost:8080/post/getAllPost",
+          type:'POST',
+          cache: false,
+          success: function(data){
+            var postHtml = "<div>"
+                for(i=0;i<data.length;i++){
+                    var id = data[i]['_id'];
+                    var content = "<div style='padding-top:20px'>"+data[i]['content']+"</div><div style='padding-top:10px;'><h6>Created By:"+data[i]['name']+"</h6></div>"
+                    content = content+"<div><h6>Comments</h6><input type='text' name='comment' placeholder='Text here'><input class='postidtext' type='text' name='comment' placeholder='Text here' value='"+id+"'>"
+                    content = content+"<button type='button' onclick='commentSubmit(this)' class='btn btn-primary'>Submit</button><div>"
+                    content = content+"<div id='"+id+"' style:'padding-top:10px;'></div>"       
+                    postHtml = postHtml+content;
+                    getComments(id)
+                }
+                postHtml = postHtml+"</div>"
+            $('#post').html(postHtml)
+          }
+        })
+        function getComments(id){
+            
+            $.ajax({
+          url: "http://localhost:8080/comment/getCommentsById",
+          type:'POST',
+          cache: false,
+          data: {id:id},
+          success: function(data){
+              
+            var postHtml = "<div>"
+                for(i=0;i<data.length;i++){
+                    if(data[i]['comment']){
+                        var content = "<div>"+data[i]['comment']+"</div>"
+                        postHtml = postHtml+content;
+                    }
+                   
+                }
+                postHtml = postHtml+"</div>"
+                console.log(postHtml)
+                $('#'+id).html(postHtml)
+          }
+        })
+
+        }
+
+        $('#post_login').click(function(){
+            
+            var data = {
+                post_data:$('#post_data').val(),
+                create:user['name']
+            }
+            $.ajax({
+                url: "http://localhost:8080/post/save",
+                type:'POST',
+                cache: false,
+                dataType: 'json',
+                data: data,
+                success: function(data){
+                    console.log("success")
+                    window.location.reload()
+                }
+            })
+        })
+          
+    </script>
+
+  <%- include('../include/footer.ejs') %>
